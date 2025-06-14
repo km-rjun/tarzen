@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react";
+import { FaRegSquare, FaRegCheckSquare, FaTrash } from "react-icons/fa";
+import Timer from "../app/components/Timer";
 
 type Task = {
   text: string;
@@ -38,52 +40,53 @@ export default function Home() {
             <ul>
                 {tasks.map((task, idx)=> (
                     <li key={idx} className="mb-3 spacr-y-3 p-3 rounded-lg bg-gray-500 flex text-xl">
-                        <div className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                checked={task.completed}
-                                onChange={() => {
-                                    const updatedTasks = [...tasks];
-                                    updatedTasks[idx] = {
-                                        ...updatedTasks[idx],
-                                        completed: !updatedTasks[idx].completed,
-                                    };
-                                    setTasks(updatedTasks);
-                                }}
-                                className="w-5 h-5 accent-green-500"
-                                />
-                                <span className={task.completed ? "line-through text-gray-400" : "" }>{task.text}</span>
-                        </div>
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+        <button
+          onClick={() => {
+            const updatedTasks = [...tasks];
+            updatedTasks[idx] = {
+              ...updatedTasks[idx],
+              completed: !updatedTasks[idx].completed,
+            };
+            setTasks(updatedTasks);
+          }}
+          className={`hover:text-green-300 ${
+               task.completed ? "text-green-500" : "text-gray-400"
+          }`}
+          aria-label="Toggle complete"
+        >
+          {task.completed ? (
+            <FaRegCheckSquare className="w-5 h-5" />
+          ) : (
+            <FaRegSquare className="w-5 h-5" />
+          )}
+          </button>
+          <span className={task.completed ? "line-through text-gray-400" : "" }>{task.text}</span>
+          </div>
 
-                        <button
-                            onClick={() => {
-                                const updatedTasks = tasks.filter((_, i) => i !== idx);
-                                setTasks(updatedTasks);
-                            }}
-                            className="text-red-500 hover:text-red-700"
-                            aria-label="Delete Task"
-                            >
-                                🗑️
-                        </button>
-                        </li>
+          <button
+          onClick={() => {
+              const updatedTasks = tasks.filter((_, i) => i !== idx);
+              setTasks(updatedTasks);
+          }}
+          className="hover:text-red-400 flex-shrink-0 ml-4"
+          aria-label="Delete Task"
+          >
+          <FaTrash className="w-5 h-5" />
+          </button>
+          </li>
                 ))}
-            </ul>
-            </aside>
+                </ul>
+                </aside>
 
-            <main className="flex-1 p-8">
-                <div className="flex-1 mb-8">
-                    <h2 className="text-xl font-semibold mb-2">Pomodoro Timer</h2>
-                    <div className="text-5xl font-mono">25:00</div>
-                </div>
-
+                <main className="flex-1 bg-gray-500 p-6 overflow-y-auto">
                 <section>
+                <Timer />
                 <h2 className="text-xl font-semibold mb-2">Stats</h2>
                 <p>Tasks Completed: 0</p>
                 <p>Time Elapsed: 0 Minutes</p>
                 </section>
-            </main>
-
-
-    </div>
+                </main>
+                </div>
     )
 }
