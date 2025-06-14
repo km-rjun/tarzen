@@ -41,9 +41,18 @@ export default function Home() {
                         <div className="flex items-center gap-3">
                             <input
                                 type="checkbox"
+                                checked={task.completed}
+                                onChange={() => {
+                                    const updatedTasks = [...tasks];
+                                    updatedTasks[idx] = {
+                                        ...updatedTasks[idx],
+                                        completed: !updatedTasks[idx].completed,
+                                    };
+                                    setTasks(updatedTasks);
+                                }}
                                 className="w-5 h-5 accent-green-500"
                                 />
-                                <span>{task.text}</span>
+                                <span className={task.completed ? "line-through text-gray-400" : "" }>{task.text}</span>
                         </div>
 
                         <button
